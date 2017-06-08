@@ -19,6 +19,9 @@ Your Emacs config should have some code like this:
 ;; Optional: Set the currencies to use (default is BTC and ETH)
 (setq coin-ticker-syms '("BTC" "ETH" "LTC" "XPR"))
 
+;; Optional: just show prices (and no symbols)
+(setq coin-ticker-show-syms nil)
+
 ;; Enable coin-ticker-mode
 (coin-ticker-mode 1)
 ```

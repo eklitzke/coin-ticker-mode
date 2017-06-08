@@ -39,13 +39,16 @@
 (defvar coin-ticker-syms '("BTC" "ETH")
   "Coins to show")
 
+(defvar coin-ticker-show-syms t
+  "If non-nil, symbols will be shown alongside prices")
+
 (defvar coin-ticker-timer nil
   "Coin API poll timer")
 
 (defvar coin-ticker-mode-line ""
   "Displayed on mode-line")
 
-;; risky
+;; risky bidnis
 (put 'coin-ticker-mode-line 'risky-local-variable t)
 
 (defun coin-ticker-start ()
@@ -53,13 +56,31 @@
     (setq coin-ticker-timer
           (run-at-time "0 sec"
                        coin-ticker-api-poll-interval
-                       #'coin-ticker-update))
-    (coin-ticker-update)))
+                       #'coin-ticker-fetch))
+    (coin-ticker-fetch)))
+
+(defun coin-ticker-stop()
+  (when coin-ticker-timer
+    (cancel-timer coin-ticker-timer)
+    (setq coin-ticker-timer nil)
+    (if (boundp 'mode-line-modes)
+        (delete '(t coin-ticker-mode-line) mode-line-modes))))
 
 (defvar coin-ticker-prices (make-hash-table :test 'equal))
 
-;; update prices, this happens async
-(defun coin-ticker-update ()
+(defun coin-ticker-price-fmt (sym price)
+  (if coin-ticker-show-syms
+      (format "%s $%s" sym price)
+    (format "$%s" price)))
+
+(defun coin-ticker-modeline-update ()
+  (setq coin-ticker-mode-line
+        (format "[%s]" (string-join
+                        (cl-loop for sym in coin-ticker-syms
+                                 collect
+                                 (coin-ticker-price-fmt sym (gethash sym coin-ticker-prices))) " "))))
+
+(defun coin-ticker-fetch ()
   (request
    coin-ticker-url
    :params '(("limit" . "10"))
@@ -70,10 +91,7 @@
                         do (let ((sym (alist-get 'symbol tick))
                                  (price (alist-get 'price_usd tick)))
                              (puthash sym price coin-ticker-prices)))
-               (let ((prices (cl-loop for sym in coin-ticker-syms
-                                      collect (format " %s $%s" sym
-                                                      (gethash sym coin-ticker-prices)))))
-                 (setq coin-ticker-mode-line (apply 'concat prices)))))))
+               (coin-ticker-modeline-update)))))
 
 (define-minor-mode coin-ticker-mode
   "Minor mode to show cryptocurrency prices"
