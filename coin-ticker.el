@@ -11,7 +11,7 @@
 ;;; Commentary:
 ;;
 ;; Provides a ticker of cryptocurrency prices (Bitcoin, Ethereum, etc.) using
-;; the coinmarketcap.io API.
+;; the coinmarketcap.com API.
 
 ;;; License:
 ;;
