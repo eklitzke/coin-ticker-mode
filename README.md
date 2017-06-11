@@ -1,12 +1,18 @@
 # Emacs coin-ticker-mode
 
-This is an Emacs minor-mode that displays the price of Bitcoin (and other
-cryptocurrencies such as Ethereum) on the mode-line. Prices are fetched using
-the [CoinMarketCap](https://coinmarketcap.com/) ticker API.
+This is an Emacs minor-mode that displays the price of Bitcoin, Ethereum, and
+other cryptocurrencies. Prices are fetched using
+the [CoinMarketCap](https://coinmarketcap.com/) ticker API, which supports
+nearly every cryptocurrency.
 
 ![Screenshot](https://github.com/eklitzke/coin-ticker-mode/blob/master/screenshot.png?raw=true)
 
 ## Installation
+
+This package is currently awaiting approval to become part of MELPA: see
+the [MELPA PR 4793](https://github.com/melpa/melpa/pull/4793).
+
+## Configuration
 
 Your Emacs config should have some code like this:
 
