@@ -1,11 +1,11 @@
 ;;; coin-ticker.el --- Show a cryptocurrency price ticker
 
-;; Copyright (C) 2017 Evan Klitzke <evan@eklitzke.org>
+;; Copyright (C) 2017 Evan Klitzke
 
 ;; Author: Evan Klitzke <evan@eklitzke.org>
 ;; URL: https://github.com/eklitzke/coin-ticker-mode
-;; Version: 20170610.0
-;; Package-Requires: ((request "0.2.0") (emacs "25"))
+;; Version: 0.1.0
+;; Package-Requires: ((request "0.3.0") (emacs "25"))
 ;; Keywords: news
 
 ;;; Commentary:
@@ -29,7 +29,6 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Code:
-
 
 (require 'json)
 (require 'request)
@@ -39,7 +38,15 @@
   :group 'comms
   :prefix "coin-ticker-")
 
+
+;;; Constants
+
+(defconst coin-ticker-version "0.1.0")
+
 (defconst coin-ticker-url "https://api.coinmarketcap.com/v1/ticker/")
+
+
+;;; Customize variables
 
 (defcustom coin-ticker-api-poll-interval 300
   "Default interval to poll to the coinmarketcap api (in seconds)"
@@ -67,6 +74,9 @@
   "The symbol to show for the price"
   :group 'coin-ticker)
 
+
+;;; Internal variables
+
 (defvar coin-ticker-prices (make-hash-table :test 'equal)
   "Hash table holding prices")
 
@@ -78,6 +88,9 @@
 
 ;; users shouldn't directly modify coin-ticker-mode-line
 (put 'coin-ticker-mode-line 'risky-local-variable t)
+
+
+;;; Methods
 
 (defun coin-ticker-start ()
   (unless coin-ticker-timer
@@ -132,6 +145,9 @@
                                  (price (alist-get (coin-ticker-price-key) tick)))
                              (puthash sym price coin-ticker-prices)))
                (coin-ticker-modeline-update)))))
+
+
+;;; Mode
 
 (define-minor-mode coin-ticker-mode
   "Minor mode to show cryptocurrency prices"
