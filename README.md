@@ -11,10 +11,13 @@ nearly every cryptocurrency.
 
 You'll need Emacs 25 or later to use coin-ticker-mode.
 
-If you're adventurous, you can install directly from GitHub. This package is
-currently awaiting approval to become part of MELPA: see
-MELPA [PR #4793](https://github.com/melpa/melpa/pull/4793). If you're patient,
-it should be approved there shortly, which will make installation easier.
+If you're adventurous, you can install directly from GitHub.
+
+This package is currently awaiting approval to become part
+of [MELPA](https://www.emacswiki.org/emacs/MELPA): see
+upstream [PR #4793](https://github.com/melpa/melpa/pull/4793). If you're
+patient, it should be approved there shortly, which will make installation
+easier.
 
 ## Configuration
 
