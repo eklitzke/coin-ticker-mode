@@ -1,24 +1,32 @@
-;; coin-ticker.el --- Show up to date cryptocurrency prices
-;;
+;;; coin-ticker.el --- Show a cryptocurrency price ticker
+
 ;; Copyright (C) 2017  Evan Klitzke
-;;
+
 ;; Author: Evan Klitzke <evan@eklitzke.org>
+;; URL: https://github.com/eklitzke/coin-ticker-mode
 ;; Version: 0.9
-;; Package-Requires: ((json "1.2") (request "0.2.0"))
+;; Package-Requires: ((request "0.2.0") (emacs "25"))
 ;; Keywords: news
-;;
+
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
-;;
+
 ;; This program is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
-;;
+
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; Provides a ticker of cryptocurrency prices (Bitcoin, Ethereum, etc.) using
+;; the coinmarketcap.io API
+
+;;; Code:
 
 (require 'request)
 (require 'json)
@@ -103,3 +111,4 @@
     (coin-ticker-stop)))
 
 (provide 'coin-ticker)
+;;; coin-ticker.el ends here
