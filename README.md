@@ -1,3 +1,5 @@
+[![Melpa Status](http://melpa.org/packages/coin-ticker-badge.svg)](http://melpa.org/#/coin-ticker)
+
 # Emacs coin-ticker-mode
 
 This is an Emacs minor mode that can display a ticket with the price of Bitcoin,
@@ -11,13 +13,8 @@ nearly every cryptocurrency.
 
 You'll need Emacs 25 or later to use coin-ticker-mode.
 
-If you're adventurous, you can install directly from GitHub.
-
-This package is currently awaiting approval to become part
-of [MELPA](https://www.emacswiki.org/emacs/MELPA): see
-upstream [PR #4793](https://github.com/melpa/melpa/pull/4793). If you're
-patient, it should be approved there shortly, which will make installation
-easier.
+The recommended way to get `coin-ticker` is as a package from the [MELPA][melpa]
+repository. The version of `coin-ticker` there will always be up-to-date.
 
 ## Configuration
 
@@ -48,3 +45,5 @@ Your Emacs config should have some code like this:
 ## License
 
 This Emacs mode is free software, released under the GPLv3, like Emacs itself.
+
+[melpa]: http://melpa.org
