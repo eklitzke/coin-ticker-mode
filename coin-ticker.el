@@ -49,21 +49,21 @@
 ;;; Customize variables
 
 (defcustom coin-ticker-api-poll-interval 300
-  "Default interval to poll to the coinmarketcap api (in seconds)"
+  "Default interval to poll to the coinmarketcap api (in seconds)."
   :type 'number
   :group 'coin-ticker)
 
 (defcustom coin-ticker-api-limit 10
-  "Number of cryptocurrencies to fetch price data for (0 for all)"
+  "Number of cryptocurrencies to fetch price data for (0 for all)."
   :type 'number
   :group 'coin-ticker)
 
 (defcustom coin-ticker-syms '("BTC" "ETH")
-  "Coins to show"
+  "Coins to show."
   :group 'coin-ticker)
 
 (defcustom coin-ticker-show-syms t
-  "If non-nil, symbols will be shown alongside prices"
+  "If non-nil, symbols will be shown alongside prices."
   :group 'coin-ticker)
 
 (defcustom coin-ticker-price-convert "USD"
@@ -71,17 +71,17 @@
   :group 'coin-ticker)
 
 (defcustom coin-ticker-price-symbol "$"
-  "The symbol to show for the price"
+  "The symbol to show for the price."
   :group 'coin-ticker)
 
 
 ;;; Internal variables
 
 (defvar coin-ticker-timer nil
-  "Coin API poll timer")
+  "Coin API poll timer.")
 
 (defvar coin-ticker-mode-line ""
-  "Displayed on mode-line")
+  "Displayed on mode-line.")
 
 ;; users shouldn't directly modify coin-ticker-mode-line
 (put 'coin-ticker-mode-line 'risky-local-variable t)
@@ -90,6 +90,7 @@
 ;;; Methods
 
 (defun coin-ticker-start ()
+  "Start the ticker."
   (unless coin-ticker-timer
     (setq coin-ticker-timer
           (run-at-time "0 sec"
@@ -98,6 +99,7 @@
     (coin-ticker-fetch)))
 
 (defun coin-ticker-stop()
+  "Stop the ticker."
   (when coin-ticker-timer
     (cancel-timer coin-ticker-timer)
     (setq coin-ticker-timer nil)
@@ -105,11 +107,13 @@
         (delete '(t coin-ticker-mode-line) mode-line-modes))))
 
 (defun coin-ticker-price-fmt (sym price)
+  "Format SYM so that its PRICE is shown."
   (if coin-ticker-show-syms
       (format "%s %s%s" sym coin-ticker-price-symbol price)
     (format "%s%s" coin-ticker-price-symbol price)))
 
 (defun coin-ticker-modeline-update (prices)
+  "Update the modeline with a PRICES dictionary."
   (setq coin-ticker-mode-line
         (format "[%s]"
                 (string-join
@@ -118,6 +122,7 @@
                           (coin-ticker-price-fmt sym (gethash sym prices))) " "))))
 
 (defun coin-ticker-build-params ()
+  "Build the HTTP params."
     (let ((params '()))
       (if (/= coin-ticker-api-limit 0)
           (add-to-list 'params `("limit" . ,coin-ticker-api-limit)))
@@ -126,11 +131,13 @@
       params))
 
 (defun coin-ticker-price-key()
+  "Get the JSON key to use when accessing a price."
   (if (= (length coin-ticker-price-convert) 0)
       'price_usd
     (intern (concat "price_" (downcase coin-ticker-price-convert)))))
 
 (defun coin-ticker-fetch ()
+  "Fetch new price data."
   (request
    coin-ticker-url
    :params (coin-ticker-build-params)
@@ -148,7 +155,7 @@
 ;;; Mode
 
 (define-minor-mode coin-ticker-mode
-  "Minor mode to show cryptocurrency prices"
+  "Minor mode to show cryptocurrency prices."
   :init-value nil
   :global t
   :lighter coin-ticker-mode-line
