@@ -32,6 +32,12 @@ Your Emacs config should have some code like this:
 ;; Optional: Just show prices (and no symbols)
 (setq coin-ticker-show-syms nil)
 
+;; Optional: Set the price unit to use (default is "USD")
+(setq coin-ticker-price-convert "EUR")
+
+;; Optional: Set the symbol used to display prices (default is "$")
+(setq coin-ticker-price-symbol "€")
+
 ;; Enable coin-ticker-mode
 (coin-ticker-mode 1)
 ```

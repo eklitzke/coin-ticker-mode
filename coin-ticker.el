@@ -47,7 +47,7 @@
   :group 'coin-ticker)
 
 (defcustom coin-ticker-api-limit 10
-  "Number of cryptocurrencies to fetch price data for"
+  "Number of cryptocurrencies to fetch price data for (0 for all)"
   :type 'number
   :group 'coin-ticker)
 
@@ -59,13 +59,24 @@
   "If non-nil, symbols will be shown alongside prices"
   :group 'coin-ticker)
 
+(defcustom coin-ticker-price-convert "USD"
+  "Used to convert prices to some base unit (USD, EUR, BTC, etc)."
+  :group 'coin-ticker)
+
+(defcustom coin-ticker-price-symbol "*"
+  "The symbol to show for the price"
+  :group 'coin-ticker)
+
+(defvar coin-ticker-prices (make-hash-table :test 'equal)
+  "Hash table holding prices")
+
 (defvar coin-ticker-timer nil
   "Coin API poll timer")
 
 (defvar coin-ticker-mode-line ""
   "Displayed on mode-line")
 
-;; risky bidnis
+;; users shouldn't directly modify coin-ticker-mode-line
 (put 'coin-ticker-mode-line 'risky-local-variable t)
 
 (defun coin-ticker-start ()
@@ -83,12 +94,10 @@
     (if (boundp 'mode-line-modes)
         (delete '(t coin-ticker-mode-line) mode-line-modes))))
 
-(defvar coin-ticker-prices (make-hash-table :test 'equal))
-
 (defun coin-ticker-price-fmt (sym price)
   (if coin-ticker-show-syms
-      (format "%s $%s" sym price)
-    (format "$%s" price)))
+      (format "%s %s%s" sym coin-ticker-price-symbol price)
+    (format "%s%s" coin-ticker-price-symbol price)))
 
 (defun coin-ticker-modeline-update ()
   (setq coin-ticker-mode-line
@@ -98,16 +107,29 @@
                           collect
                           (coin-ticker-price-fmt sym (gethash sym coin-ticker-prices))) " "))))
 
+(defun coin-ticker-build-params ()
+    (let ((params '()))
+      (if (/= coin-ticker-api-limit 0)
+          (add-to-list 'params `("limit" . ,coin-ticker-api-limit)))
+      (if (> (length coin-ticker-price-convert) 0)
+          (add-to-list 'params `("convert" . ,coin-ticker-price-convert)))
+      params))
+
+(defun coin-ticker-price-key()
+  (if (= (length coin-ticker-price-convert) 0)
+      'price_usd
+    (intern (concat "price_" (downcase coin-ticker-price-convert)))))
+
 (defun coin-ticker-fetch ()
   (request
    coin-ticker-url
-   :params '(("limit" . coin-ticker-api-limit))
+   :params (coin-ticker-build-params)
    :parser 'json-read
    :success (cl-function
              (lambda (&key data &allow-other-keys)
                (cl-loop for tick across data
                         do (let ((sym (alist-get 'symbol tick))
-                                 (price (alist-get 'price_usd tick)))
+                                 (price (alist-get (coin-ticker-price-key) tick)))
                              (puthash sym price coin-ticker-prices)))
                (coin-ticker-modeline-update)))))
 
