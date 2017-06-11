@@ -63,7 +63,7 @@
   "Used to convert prices to some base unit (USD, EUR, BTC, etc)."
   :group 'coin-ticker)
 
-(defcustom coin-ticker-price-symbol "*"
+(defcustom coin-ticker-price-symbol "$"
   "The symbol to show for the price"
   :group 'coin-ticker)
 
