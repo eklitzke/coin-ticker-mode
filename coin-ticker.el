@@ -37,7 +37,7 @@
 (defgroup coin-ticker nil
   "coin-ticker extension"
   :group 'comms
-  :prefix "coincap-ticker-")
+  :prefix "coin-ticker-")
 
 (defconst coin-ticker-url "https://api.coinmarketcap.com/v1/ticker/")
 
