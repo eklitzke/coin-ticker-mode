@@ -9,8 +9,12 @@ nearly every cryptocurrency.
 
 ## Installation
 
-This package is currently awaiting approval to become part of MELPA: see
-the [MELPA PR 4793](https://github.com/melpa/melpa/pull/4793).
+You'll need Emacs 25 or later to use coin-ticker-mode.
+
+If you're adventurous, you can install directly from GitHub. This package is
+currently awaiting approval to become part of MELPA: see
+MELPA [PR #4793](https://github.com/melpa/melpa/pull/4793). If you're patient,
+it should be approved there shortly, which will make installation easier.
 
 ## Configuration
 
@@ -31,3 +35,7 @@ Your Emacs config should have some code like this:
 ;; Enable coin-ticker-mode
 (coin-ticker-mode 1)
 ```
+
+## Contributing / License
+
+This is free software, released under the GPLv3. Pull requests are welcome.
