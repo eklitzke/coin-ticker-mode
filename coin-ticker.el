@@ -77,9 +77,6 @@
 
 ;;; Internal variables
 
-(defvar coin-ticker-prices (make-hash-table :test 'equal)
-  "Hash table holding prices")
-
 (defvar coin-ticker-timer nil
   "Coin API poll timer")
 
@@ -112,13 +109,13 @@
       (format "%s %s%s" sym coin-ticker-price-symbol price)
     (format "%s%s" coin-ticker-price-symbol price)))
 
-(defun coin-ticker-modeline-update ()
+(defun coin-ticker-modeline-update (prices)
   (setq coin-ticker-mode-line
         (format "[%s]"
                 (string-join
                  (cl-loop for sym in coin-ticker-syms
                           collect
-                          (coin-ticker-price-fmt sym (gethash sym coin-ticker-prices))) " "))))
+                          (coin-ticker-price-fmt sym (gethash sym prices))) " "))))
 
 (defun coin-ticker-build-params ()
     (let ((params '()))
@@ -140,11 +137,12 @@
    :parser 'json-read
    :success (cl-function
              (lambda (&key data &allow-other-keys)
-               (cl-loop for tick across data
-                        do (let ((sym (alist-get 'symbol tick))
-                                 (price (alist-get (coin-ticker-price-key) tick)))
-                             (puthash sym price coin-ticker-prices)))
-               (coin-ticker-modeline-update)))))
+               (let ((prices (make-hash-table :test 'equal)))
+                 (cl-loop for tick across data
+                          do (let ((sym (alist-get 'symbol tick))
+                                   (price (alist-get (coin-ticker-price-key) tick)))
+                               (puthash sym price prices)))
+                 (coin-ticker-modeline-update prices))))))
 
 
 ;;; Mode
