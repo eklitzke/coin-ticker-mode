@@ -1,7 +1,7 @@
 # Emacs coin-ticker-mode
 
-This is an Emacs minor-mode that displays the price of Bitcoin, Ethereum, and
-other cryptocurrencies. Prices are fetched using
+This is an Emacs minor mode that can display a ticket with the price of Bitcoin,
+Ethereum, and other cryptocurrencies. Prices are fetched using
 the [CoinMarketCap](https://coinmarketcap.com/) ticker API, which supports
 nearly every cryptocurrency.
 
@@ -42,6 +42,6 @@ Your Emacs config should have some code like this:
 (coin-ticker-mode 1)
 ```
 
-## Contributing / License
+## License
 
-This is free software, released under the GPLv3. Pull requests are welcome.
+This Emacs mode is free software, released under the GPLv3, like Emacs itself.
