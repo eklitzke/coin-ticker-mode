@@ -4,7 +4,7 @@
 
 ;; Author: Evan Klitzke <evan@eklitzke.org>
 ;; URL: https://github.com/eklitzke/coin-ticker-mode
-;; Version: 0.9
+;; Version: 0
 ;; Package-Requires: ((request "0.2.0") (emacs "25"))
 ;; Keywords: news
 
@@ -43,11 +43,10 @@
   :type 'number
   :group 'coin-ticker)
 
-;; hash table that holds prices
-(defvar coin-ticker-syms '("BTC" "ETH")
+(defcustom coin-ticker-syms '("BTC" "ETH")
   "Coins to show")
 
-(defvar coin-ticker-show-syms t
+(defcustom coin-ticker-show-syms t
   "If non-nil, symbols will be shown alongside prices")
 
 (defvar coin-ticker-timer nil
