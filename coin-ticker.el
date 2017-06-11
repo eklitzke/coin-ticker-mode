@@ -43,11 +43,18 @@
   :type 'number
   :group 'coin-ticker)
 
+(defcustom coin-ticker-api-limit 10
+  "Number of cryptocurrencies to fetch price data for"
+  :type 'number
+  :group 'coin-ticker)
+
 (defcustom coin-ticker-syms '("BTC" "ETH")
-  "Coins to show")
+  "Coins to show"
+  :group 'coin-ticker)
 
 (defcustom coin-ticker-show-syms t
-  "If non-nil, symbols will be shown alongside prices")
+  "If non-nil, symbols will be shown alongside prices"
+  :group 'coin-ticker)
 
 (defvar coin-ticker-timer nil
   "Coin API poll timer")
@@ -82,15 +89,16 @@
 
 (defun coin-ticker-modeline-update ()
   (setq coin-ticker-mode-line
-        (format "[%s]" (string-join
-                        (cl-loop for sym in coin-ticker-syms
-                                 collect
-                                 (coin-ticker-price-fmt sym (gethash sym coin-ticker-prices))) " "))))
+        (format "[%s]"
+                (string-join
+                 (cl-loop for sym in coin-ticker-syms
+                          collect
+                          (coin-ticker-price-fmt sym (gethash sym coin-ticker-prices))) " "))))
 
 (defun coin-ticker-fetch ()
   (request
    coin-ticker-url
-   :params '(("limit" . "10"))
+   :params '(("limit" . coin-ticker-api-limit))
    :parser 'json-read
    :success (cl-function
              (lambda (&key data &allow-other-keys)
@@ -106,7 +114,7 @@
   :global t
   :lighter coin-ticker-mode-line
   (if coin-ticker-mode
-      (progn (coin-ticker-start))
+      (coin-ticker-start)
     (coin-ticker-stop)))
 
 (provide 'coin-ticker)
